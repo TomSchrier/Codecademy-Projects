@@ -22,13 +22,88 @@ const mystery5 = [4, 9, 1, 3, 5, 4, 0, 4, 6, 3, 0, 7, 2, 5, 2, 3]
 // An array of all the arrays above
 const batch = [valid1, valid2, valid3, valid4, valid5, invalid1, invalid2, invalid3, invalid4, invalid5, mystery1, mystery2, mystery3, mystery4, mystery5]
 
+function validateCred(array) {
+    let cardNums = [...array];
+    let sum = 0
 
-// Add your functions below:
+    for (let index = cardNums.length - 1; index >= 0; index--) {
+        if (index % 2 === 0) {
 
+            let result = cardNums[index] * 2;
 
+            if (result > 9) {
+                cardNums[index] = result - 9;
+            } else {
+                cardNums[index] = result;
+            };
+        };
+        sum += cardNums[index];
+    };
 
+    if (sum % 10 === 0) {
+        return true;
+    } else {
+        return false;
+    };
 
+    //valid3 gets returned as invalid
+};
 
+function findInvalidCards(nestedArray) {
+    let validCardsAmount = 0;
+    let invalidCardsAmount = 0;
 
+    let validCards = [];
+    let invalidCards = [];
 
+    for (let index = 0; index < nestedArray.length; index++) {
+        if (validateCred(nestedArray[index])) {
+            validCardsAmount++;
+            validCards.push(nestedArray[index]);
+        } else {
+            invalidCardsAmount++
+            invalidCards.push(nestedArray[index]);
+        };
 
+    }
+
+    return invalidCards;
+};
+
+function idInvalidCardCompanies(invalidCardsArray) {
+
+    let InvalidCardCompanies = [];
+
+    for (let index = 0; index < invalidCardsArray.length; index++) {
+
+        switch (invalidCardsArray[index][0]) {
+            case 3:
+                if (!InvalidCardCompanies.includes('Amex')) {
+                    InvalidCardCompanies.push('Amex');
+                };
+                break;
+            case 4:
+                if (!InvalidCardCompanies.includes('Visa')) {
+                    InvalidCardCompanies.push('Visa');
+                };
+                break;
+            case 5:
+                if (!InvalidCardCompanies.includes('Mastercard')) {
+                    InvalidCardCompanies.push('Mastercard');
+                };
+                break;
+            case 6:
+                if (!InvalidCardCompanies.includes('Discover')) {
+                    InvalidCardCompanies.push('Discover');
+                };
+                break;
+            default:
+                console.log("Company not found");
+        };
+
+    };
+
+    return InvalidCardCompanies;
+};
+
+console.log(idInvalidCardCompanies(findInvalidCards(batch)));
